@@ -1,4 +1,5 @@
 npm init -y
+npm install standard -D    //correccion de código para que sea mas correcto. esLint. Requiere actualizar package.json de la raiz y tener extension de slint
 mkdir projects		//si queremos que el proyecto sirva para varios miniproyectos
 cd projects/
 

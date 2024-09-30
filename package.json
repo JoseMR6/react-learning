@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/JoseMR6/react-learning/issues"
   },
-  "homepage": "https://github.com/JoseMR6/react-learning#readme"
+  "homepage": "https://github.com/JoseMR6/react-learning#readme",
+  "devDependencies": {
+    "standard": "^17.1.2"
+  },
+  "eslintConfig": {
+    "extends": "./node_modules/standard/eslintrc.json"
+  }
 }

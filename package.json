@@ -1,0 +1,20 @@
+{
+  "name": "react-learning",
+  "version": "1.0.0",
+  "description": "Proyectos de aprendizaje de cursos de react",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoseMR6/react-learning.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoseMR6/react-learning/issues"
+  },
+  "homepage": "https://github.com/JoseMR6/react-learning#readme"
+}

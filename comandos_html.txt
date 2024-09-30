@@ -1,26 +1,12 @@
-sudo systemctl start apache2	//No necesarios con vite?
-sudo systemctl status apache2
-sudo systemctl stop apache2
-
 npm init -y
 mkdir projects		//si queremos que el proyecto sirva para varios miniproyectos
-//npm install standard -D    //correccion de código para que sea mas correcto. esLint. Requiere actualizar package.json de la raiz y tener extension de slint
 cd projects/
 
 npm create vite@latest
-NombreProyecto
-nombreproyecto
+nombre-proyecto
 React
 JavaScript + SWC
-cd NombreProyecto/
-//npm install @vitejs/plugin-react -E //si es proyecto vanilla
-//npm install react react-dom -E      //si es proyecto vanilla
-//npm install standard -D	      //"
+cd nombre-proyecto/
 npm install
-//npm install canvas-confetti -E
-//npm install just-debounce-it -E
 
 npm run dev
-
-//npm init playwright@latest   //testear
-//npx playwright test	       //"

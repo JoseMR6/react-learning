@@ -1,0 +1,2 @@
+nvm install node --reinstall-packages-from=node
+npm install path-to-regexp -E

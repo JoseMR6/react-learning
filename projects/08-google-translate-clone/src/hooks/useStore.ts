@@ -39,10 +39,13 @@ function reducer(state: State, action: Action) {
     }
 
     if (type === 'SET_FROM_TEXT') {
+        const newText=action.payload
+        const loading= (newText!=='')?true:false
+
         return {
             ...state,
-            loading: true,
-            fromText: action.payload,
+            loading: loading,
+            fromText: newText,
             result: ''
         }
     }

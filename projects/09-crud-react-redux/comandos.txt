@@ -11,3 +11,4 @@ content: [
   ]
 */
 npm install @reduxjs/toolkit react-redux -E
+npm install sonner -E

@@ -1,12 +1,16 @@
-import { Button, Card, TextInput, Title } from "@tremor/react";
+import { Badge, Button, Card, TextInput, Title } from "@tremor/react";
 import { useUserActions } from "../hooks/useUserActions";
+import { useState } from "react";
 
 export function CreateNewUser() {
-    const {addUser} = useUserActions()
-    
-    const handleSubmit = (event:React.FormEvent<HTMLFormEvent>)=>{
+    const { addUser } = useUserActions()
+    const [result, setResult] = useState<'ok' | 'ko' | null>(null)
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormEvent>) => {
         event.preventDefault()
-        
+
+        setResult(null)
+
         const form = event.target
         const formData = new FormData(form)
 
@@ -14,11 +18,17 @@ export function CreateNewUser() {
         const email = formData.get('email') as string
         const github = formData.get('github') as string
 
-        addUser({name,email,github})
+        if (!name || !email || !github) {
+            return setResult('ko')
+        }
+
+        addUser({ name, email, github })
+        setResult('ok')
+        form.reset()
     }
-    
+
     return (
-        <Card style={{marginTop:'16px'}}>
+        <Card style={{ marginTop: '16px' }}>
             <Title>Create New User</Title>
             <form onSubmit={handleSubmit} className="">
                 <TextInput
@@ -37,10 +47,26 @@ export function CreateNewUser() {
                 <div>
                     <Button
                         type="submit"
-                        style={{marginTop:'16px'}}
+                        style={{ marginTop: '16px' }}
                     >
                         Crear Usuario
                     </Button>
+                    <span>
+                        {result === 'ok' &&
+                            <Badge>
+                                <span style={{ color: 'green' }}>
+                                    Guardado Correctamente
+                                </span>
+                            </Badge>
+                        }
+                        {result === 'ko' &&
+                            <Badge>
+                                <span style={{ color: 'red' }}>
+                                    Error con los campos
+                                </span>
+                            </Badge>
+                        }
+                    </span>
                 </div>
             </form>
         </Card>

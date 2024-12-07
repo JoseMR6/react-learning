@@ -1,15 +1,23 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import './App.css'
 import { UsersList } from './components/UsersList'
-import { SortBy, User } from './types.d'
+import { SortBy } from './types.d'
+import { useUsers } from './hooks/useUsers'
+import { Results } from './components/Results'
 
 function App() {
-  const [users, setUsers] = useState<User[]>([])
+  const { isLoading, isError, users, refetch, fetchNextPage, hasNextPage } = useUsers()
+
+  //const [users, setUsers] = useState<User[]>([])
   const [showColors, setShowColors] = useState(false)
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE)
   const [filterCountry, setFilterCountry] = useState<string | null>(null)
 
-  const originalUsers = useRef<User[]>([])
+  //const [loading, setLoading] = useState(false)
+  //const [error, setError] = useState(false)
+  //const [currentPage, setCurrentPage] = useState(1)
+
+  //const originalUsers = useRef<User[]>([])
 
   const toggleColors = () => {
     setShowColors(!showColors)
@@ -20,32 +28,44 @@ function App() {
     setSorting(newSortingValue)
   }
 
-  const handleReset = () => {
-    setUsers(originalUsers.current)
+  const handleReset = async () => {
+    //setUsers(originalUsers.current)
+    await refetch()
   }
 
   const handleDelete = (email: string) => {
-    const filteredUsers = users.filter((user) => {
+    /*const filteredUsers = users.filter((user) => {
       return user.email !== email
-    })
-    setUsers(filteredUsers)
+    })*/
+    //setUsers(filteredUsers)
   }
 
-  const handleChangeSort=(sort:SortBy)=>{
+  const handleChangeSort = (sort: SortBy) => {
     setSorting(sort)
   }
 
-  useEffect(() => {
-    fetch('https://randomuser.me/api/?results=100')
-      .then(res => res.json())
-      .then(res => {
-        originalUsers.current = res.results
-        setUsers(res.results)
+  /*useEffect(() => {
+    setLoading(true)
+    setError(false)
+
+    fetchUsers(currentPage)
+      .then(users => {
+        setUsers(prevUsers => {
+          const newUsers = currentPage===1
+            ? users
+            : prevUsers.concat(users)
+          if(currentPage===1) originalUsers.current = newUsers
+          return newUsers
+        })
       })
       .catch(err => {
+        setError(err)
         console.error(err)
       })
-  }, [])
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [currentPage])*/
 
   const filteredUsers = useMemo(() => {
     return filterCountry != null && filterCountry.length > 0
@@ -56,19 +76,19 @@ function App() {
   }, [users, filterCountry])
 
   const sortedUsers = useMemo(() => {
-    if(sorting === SortBy.NONE) return filteredUsers
-    if(sorting === SortBy.COUNTRY){
+    if (sorting === SortBy.NONE) return filteredUsers
+    if (sorting === SortBy.COUNTRY) {
       //toSorted es mas moderno
       return [...filteredUsers].sort((a, b) => {
         return a.location.country.localeCompare(b.location.country)
       })
     }
-    if(sorting === SortBy.NAME){
+    if (sorting === SortBy.NAME) {
       return [...filteredUsers].sort((a, b) => {
         return a.name.first.localeCompare(b.name.first)
       })
     }
-    if(sorting === SortBy.LAST){
+    if (sorting === SortBy.LAST) {
       return [...filteredUsers].sort((a, b) => {
         return a.name.last.localeCompare(b.name.last)
       })
@@ -80,6 +100,7 @@ function App() {
   return (
     <>
       <h1>Prueba Tecnica</h1>
+      <Results/>
       <header>
         <button onClick={toggleColors}>
           Colorear Filas
@@ -95,7 +116,23 @@ function App() {
         }} />
       </header>
       <main>
-        <UsersList changeSorting={handleChangeSort} deleteUser={handleDelete} showColors={showColors} users={sortedUsers} />
+        {users.length > 0 &&
+          <UsersList changeSorting={handleChangeSort} deleteUser={handleDelete} showColors={showColors} users={sortedUsers} />
+        }
+
+        {isLoading && <p>Cargando...</p>}
+        {isError && <p>Ocurrio error</p>}
+        {!isLoading && !isError && users.length === 0 && <p>No hay Usuarios</p>}
+
+        {!isLoading && !isError && hasNextPage === true &&
+          <button onClick={() => {
+            //setCurrentPage(currentPage + 1)
+            fetchNextPage()
+          }
+          }>Mas Resultados</button>
+        }
+
+        {!isLoading && !isError && hasNextPage===false && <p>No hay mas resultados</p>}
       </main>
     </>
   )

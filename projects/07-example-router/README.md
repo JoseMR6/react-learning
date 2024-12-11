@@ -1,8 +1,34 @@
-# React + Vite
+# Configuración Específica
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Proyecto utilizando Javascript.
 
-Currently, two official plugins are available:
+Dependencias extras:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```
+npm install path-to-regexp -E
+npm install vitest -D
+```
+
+Modificar `package.json` añadiendo a `"scripts"`:
+
+```
+"test": "vitest"
+```
+
+```
+npm install happy-dom @testing-library/react -D
+```
+
+Modificar `vite.config.js` añadiendo a `defineConfig`:
+
+```
+test: {
+    environment: 'happy-dom'
+}
+```
+
+Para ejecutar los tests se utiliza:
+
+```
+npm run test
+```
